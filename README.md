@@ -39,6 +39,19 @@ Next, the cloud function will update the user's state data and compare it with t
 Leveraging the real-time update capabilities of Firebase Firestore, the client-side leaderboard component will be automatically notified of any changes to the leaderboard data. This eliminates the need for implementing additional real-time communication technologies like WebSocket or WebRTC
 
 # Modules design
+![module-design](https://github.com/hnvcam/elsa-challenge/blob/main/Esla%20Tech%20Challenge-Modules%20Design.png)
 
+| System | Module | Description |
+| --- | --- | --- |
+| Client | Login module | This React component set will do the anonymous login or providing a login screen to user. Firebase does support various types of login and react component to integrate with. |
+| | Home page module | This page includes other modules (React components) to display data to users. There are 2 parts in the home page: <br/>- Static: The list of Quizzes by SSG <br/>- Dynamic: The User state and Leaderboad by api request and Firestore real-time update |
+| | User state module | This page is simply a React component that displays the user score together of number of taken quizzes from the query to Firestore by user Id. |
+| | Leaderboard module | This is also a React component that queries data from Firestore and display it. It also subscribes for changes to these objects. |
+| | Quizzes pages | These pages are generated based on the data from Headless CMS. With most of SSG frameworks like Gatsy, NextJS, Astro, pagination is also supported. |
+| | Test taking modules | These are static pages with form submission to the Firebase HTTPs endpoint. |
+| Server | Firebase Firestore | This services provide content storage for documents and queries. We will store the User State, Leaderboard, and AnswerSubmission on this document storage |
+| | Firebase Functions | Provides the HTTPs endpoint to accept AnswerSubmission and query the correct answer from Headless CMS, then calculate the score. This function also update to User State and Leaderboard |
+| | Headless CMS | Provides the CMS functionality with prebuilt UI for back office. |
+| SSG | Gatsby Dynamic pages | Retrieves the data from Headless CMS to build Quizzes page and Test page content. This will be executed by the CI. |
 
   
