@@ -1,7 +1,7 @@
 # System Scope
 - Support users accessing by web browser.
 - CCU < 10.000
-- The content of each type of quiz is fixed, NO dynamic quiz creation.
+- The content of each type of quiz is fixed.
 
 # Sample UI
 ![/UI Design.png](https://github.com/hnvcam/elsa-challenge/blob/main/UI%20Design.png)
@@ -30,7 +30,7 @@
 ### The generic flows of the system in high-level
 - All quizzes will be created and managed using a headless CMS, such as Contentful or Storyblok. This eliminates the need for extensive upfront development work to design and implement a custom backend system.
 By utilizing a headless CMS, we can focus on building a robust and user-friendly frontend experience. Additionally, the CMS provides a comprehensive set of APIs for accessing and managing quiz content, saving us the time and resources required to develop our own custom content management solution.
-- During the CI/CD build process, we will retrieve all quiz data from the headless CMS to populate the quiz list on the homepage and implement pagination for the all-quizzes page.
+- During the CI/CD build process, we will retrieve all quiz data from the headless CMS to populate the quiz list on the homepage and implement pagination for the all-quizzes page. With SSG, each page (quiz test) will have unique slug, so user can access directly to the test with slug.
 Dynamic page generation will also create the presentation of individual quizzes, including all questions and answer options. It's essential to ensure that the correct answers are not revealed in the frontend presentation; this logic should be handled by cloud functions.
 - When a user browses to the application, we will implement anonymous authentication using Firebase or restore previous logged-in sessions. This allows us to track user progress without requiring explicit logins, while also ensuring backend security.
 - Upon completing a quiz, the client-side application (using Redux and Redux Saga) will submit the user's selected answers (including question IDs and selection IDs) to a cloud function.
@@ -53,5 +53,10 @@ Leveraging the real-time update capabilities of Firebase Firestore, the client-s
 | | Firebase Functions | Provides the HTTPs endpoint to accept AnswerSubmission and query the correct answer from Headless CMS, then calculate the score. This function also update to User State and Leaderboard |
 | | Headless CMS | Provides the CMS functionality with prebuilt UI for back office. |
 | SSG | Gatsby Dynamic pages | Retrieves the data from Headless CMS to build Quizzes page and Test page content. This will be executed by the CI. |
+
+# Further consideration
+- Dynamic Quiz composition: applying Server Side Rendering to build the content of Quiz based on defined criteria to make some variations of the same quiz if needs.
+- Scalability: To increase the CCU limit, consider to use multi-region database location. The CCU is limited by the number of real-time listeners (~1M) and concurrent functions execution (~1000). 
+- Serverless providers: There are several alternative options: AWS Lamda, Azure Functions or Supabase (which kind of similar to Firebase)
 
   
